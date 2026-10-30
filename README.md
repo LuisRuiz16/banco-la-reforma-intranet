@@ -45,13 +45,13 @@ Para editar en Visual Studio Code sin Docker, instala **Node.js 24**, abre la ca
 3. El navegador abrirá **http://127.0.0.1:5173**.
 4. Deja abierta la ventana que ejecuta el servidor. Para detenerlo, presiona **Ctrl+C** en esa ventana.
 
-El archivo de inicio encuentra la instalación local de Node.js preparada para este equipo. Si compartes el proyecto, instala primero [Node.js LTS](https://nodejs.org/) y usa los mismos pasos. La primera instalación de dependencias necesita Internet.
+El archivo de inicio utiliza Node.js y npm instalados en el PATH de Windows. Instala primero [Node.js 24](https://nodejs.org/), abre una terminal nueva y usa los mismos pasos. La primera instalación de dependencias necesita Internet.
 
 Si aparece “Port 5173 is already in use”, normalmente ya existe una instancia de esta intranet: abre la dirección del paso 3. Para un segundo servidor utiliza `npm.cmd run dev -- --port 5174` y la dirección que muestre Vite.
 
 ## Ejecutarlo desde la terminal de VS Code
 
-Abre una terminal nueva después de abrir la carpeta. Los archivos de configuración incluyen la ruta de Node.js de este equipo.
+Abre una terminal nueva después de instalar Node.js y abrir la carpeta. Comprueba `node --version` y `npm.cmd --version` antes de ejecutar los siguientes comandos.
 
 ```powershell
 npm.cmd ci
