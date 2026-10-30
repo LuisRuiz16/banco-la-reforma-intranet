@@ -1,0 +1,15 @@
+# Configuración independiente para la VM Ubuntu.
+# Ejecutar: sudo docker compose -f compose.ubuntu.yaml up -d --build
+services:
+  intranet:
+    build:
+      context: .
+      args:
+        VITE_HELPDESK_URL: ${VITE_HELPDESK_URL:-}
+    image: banco-reforma-intranet:local
+    container_name: banco-reforma-intranet
+    ports:
+      - "${LAB_BIND_IP:-127.0.0.1}:8095:80"
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
