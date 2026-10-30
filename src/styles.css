@@ -3266,3 +3266,142 @@ svg {
     font-size: 9px;
   }
 }
+:root {
+  --message-border: #dce5d8;
+}
+.daily-message {
+  margin: 28px 0 32px;
+  padding: 26px 30px;
+  border: 1px solid var(--message-border);
+  border-radius: 16px;
+  background: #fff;
+}
+.daily-heading {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.daily-heading h2 {
+  margin: 5px 0 0;
+  font-size: 21px;
+}
+.daily-heading .eyebrow {
+  font-size: 10px;
+  letter-spacing: 2px;
+}
+.daily-heading .message-edit {
+  margin-left: auto;
+  border: 1px solid var(--message-border);
+}
+.message-content {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  line-height: 1.8;
+  margin: 22px 0 14px;
+}
+.message-muted {
+  color: #66766b;
+  font-size: 13px;
+  line-height: 1.6;
+  margin-top: 16px;
+}
+.message-form {
+  margin-top: 22px;
+}
+.message-form label {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.message-form textarea {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #8d9f90;
+  border-radius: 10px;
+  padding: 14px;
+  font: inherit;
+  color: #173f35;
+  background: #fbfcfa;
+  resize: vertical;
+}
+.message-form textarea:focus {
+  outline: 2px solid #426d4a;
+  outline-offset: 2px;
+}
+.message-form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 18px;
+  flex-wrap: wrap;
+}
+.daily-message button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.message-error {
+  margin-top: 18px;
+  padding: 14px;
+  border-radius: 8px;
+  color: #84382e;
+  background: #fff1eb;
+}
+.message-error p {
+  margin: 0 0 10px;
+}
+.message-success {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  color: #315e35;
+}
+.access-screen {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: #eef2e8;
+}
+.access-screen section {
+  max-width: 620px;
+  background: white;
+  padding: 40px;
+  border: 1px solid #dce5d8;
+  border-radius: 18px;
+}
+.access-screen h1 {
+  font-size: 30px;
+  margin: 16px 0;
+}
+.access-screen p {
+  line-height: 1.7;
+  margin-bottom: 24px;
+}
+.header-actions .profile-copy strong {
+  max-width: 170px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.header-actions .logout-button {
+  padding: 9px 12px;
+  white-space: nowrap;
+  font-size: 12px;
+  border: 1px solid var(--message-border);
+}
+@media (max-width: 640px) {
+  .daily-message {
+    padding: 20px;
+  }
+  .daily-heading .message-edit {
+    margin-left: 0;
+  }
+  .header-actions .logout-button {
+    padding: 8px;
+    font-size: 11px;
+  }
+  .access-screen section {
+    padding: 24px;
+  }
+}

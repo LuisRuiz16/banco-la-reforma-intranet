@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from "react";
+import { useAuth } from "./auth/AuthContext";
+import DailyMessage from "./message/DailyMessage";
 import {
   Link,
   NavLink,
@@ -314,7 +316,7 @@ function NewsCard({ item, onOpen }) {
   );
 }
 
-function Home({ openNews, openEvent }) {
+function Home({ openNews, openEvent, messageApi }) {
   const shortcuts = [
     {
       title: "Documentos",
@@ -380,6 +382,7 @@ function Home({ openNews, openEvent }) {
           </div>
         </div>
       </section>
+      <DailyMessage api={messageApi} />
       <div className="section-heading compact">
         <h2>Tu día, más sencillo</h2>
         <span>Accesos rápidos</span>
@@ -1203,7 +1206,8 @@ function SearchPage({ openNews, openDocument }) {
   );
 }
 
-function App() {
+function App({ messageApi }) {
+  const auth = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
   const [modal, setModal] = useState(null);
   const [toast, setToast] = useState("");
@@ -1382,9 +1386,27 @@ function App() {
             <div className="header-divider" />
             <div className="profile-avatar">LR</div>
             <div className="profile-copy">
-              <strong>Hola, equipo</strong>
-              <span>Banco La Reforma</span>
+              <strong>
+                {auth.name ? `Hola, ${auth.name}` : "Hola, equipo"}
+              </strong>
+              <span>{auth.role || "Banco La Reforma"}</span>
             </div>
+            {auth.status === "authenticated" && (
+              <button
+                className="button logout-button"
+                onClick={() =>
+                  auth.session
+                    .logout()
+                    .catch(() =>
+                      setToast(
+                        "No se pudo cerrar sesión. Comprueba tu conexión e inténtalo otra vez.",
+                      ),
+                    )
+                }
+              >
+                Cerrar sesión
+              </button>
+            )}
           </div>
         </header>
         <main id="contenido" className="main-content">
@@ -1393,6 +1415,7 @@ function App() {
               path="/"
               element={
                 <Home
+                  messageApi={messageApi}
                   openNews={openNews}
                   openEvent={(event) =>
                     setModal({ type: "event", data: event })

@@ -122,7 +122,7 @@ export const news = [
     body: [
       "Nuestra intranet reúne información institucional, comunicados, documentos de consulta y un directorio de áreas. Su propósito es facilitar el acceso a los recursos y reducir la dispersión de información.",
       "Desde el menú puedes conocer al banco, consultar los comunicados, explorar documentos o encontrar el área que necesitas. El buscador también te ayuda a localizar estos contenidos por palabras clave.",
-      "Esta primera versión es un portal informativo del proyecto académico. La autenticación con Keycloak y la mesa de servicios se integrarán en etapas posteriores del proyecto.",
+      "Este portal informativo forma parte del proyecto académico. El acceso con Keycloak y el mensaje institucional se habilitan al conectar los servicios del equipo. La mesa de servicios es una aplicación independiente.",
     ],
   },
   {
@@ -292,7 +292,7 @@ export const documents = [
       },
       {
         title: "Mantén un historial",
-        text: "Registra los cambios relevantes. En esta versión estática las modificaciones se realizan en los archivos del proyecto.",
+        text: "Registra los cambios relevantes. El contenido informativo se modifica en los archivos del proyecto. Con los servicios conectados, el administrador puede actualizar el mensaje del día desde Inicio.",
       },
     ],
   },
@@ -379,7 +379,7 @@ export const faqs = [
   {
     question: "¿El portal ya inicia sesión con Keycloak?",
     answer:
-      "Todavía no. Esta entrega es estática y no solicita credenciales. La integración con Keycloak y los permisos por rol forman parte de una fase posterior del proyecto.",
+      "El inicio de sesión se habilita al conectar Keycloak. Entonces, ADMIN y EMPLEADO pueden consultar la intranet; solo ADMIN puede editar el mensaje del día. Mientras los servicios no estén conectados, se muestra la versión informativa.",
   },
   {
     question: "¿Son documentos oficiales de un banco real?",

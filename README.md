@@ -36,7 +36,19 @@ Las otras máquinas deben poder comunicarse con esa IP y entrar en `http://IP_DE
 
 Para editar en Visual Studio Code sin Docker, instala **Node.js 24**, abre la carpeta y ejecuta `npm ci` y `npm run dev`. En PowerShell puedes utilizar `npm.cmd`.
 
-**Alcance actual:** contenido estático, sin base de datos ni API propia. Keycloak y los roles `ADMIN` / `EMPLEADO` todavía no están implementados. La información editable está en `src/data/content.js`; los favoritos se guardan únicamente en el navegador. Consulta [las integraciones pendientes](docs/INTEGRACIONES.md).
+**Alcance actual:** portal informativo con integración configurable de Keycloak y un mensaje del día mediante API externa. `ADMIN` puede editar el mensaje y `EMPLEADO` puede leerlo. Por defecto `VITE_AUTH_ENABLED=false`: se conserva la vista informativa mientras el equipo proporciona sus servicios; no hay usuarios ni roles simulados en la aplicación. El resto del contenido sigue en `src/data/content.js`. Consulta [la guía de conexión](docs/INTEGRACIONES.md).
+
+## Activar Keycloak y el mensaje del día
+
+1. Copia `.env.example` a `.env` (PowerShell: `Copy-Item .env.example .env`). No publiques `.env`.
+2. Solicita al compañero la URL HTTPS de Keycloak, el realm, el cliente `intranet`, el origen de los roles y las URL/métodos de la API.
+3. Completa las variables y cambia `VITE_AUTH_ENABLED=true`. Las rutas de ejemplo de la guía son una propuesta, no servicios ya disponibles.
+4. Reinicia Vite o reconstruye con `docker compose up -d --build` (Ubuntu: agrega `-f compose.ubuntu.yaml`).
+5. Registra en Keycloak las URL de retorno y el origen exacto de la intranet. Para otras VMs necesitas HTTPS confiable en la intranet, Keycloak y API; HTTP se admite solo en localhost para desarrollo.
+
+Al abrir la intranet habilitada, el navegador va a Keycloak. Después del login, una cuenta con `ADMIN` o `EMPLEADO` puede entrar; solo `ADMIN` ve el editor del mensaje. Las consultas y actualizaciones envían el token renovado. El frontend **no se conecta directamente a la base de datos**: la API del compañero valida permisos, guarda el contenido y registra autor/fecha.
+
+Ejecuta `npm.cmd test` en Windows o `npm test` en Ubuntu para comprobar las pruebas automatizadas. Estas usan dobles de prueba; la comprobación con Keycloak y API reales sigue pendiente hasta disponer de sus datos. [Contrato y pasos para tu compañero](docs/INTEGRACIONES.md).
 
 ## Abrirlo en esta computadora
 
@@ -128,9 +140,9 @@ Los comunicados, las fechas de agenda, las guías y los principios editoriales s
 
 ## Alcance de esta entrega
 
-Esta aplicación es **estática**: no tiene backend, base de datos, inicio de sesión, SSO, administración de usuarios ni permisos reales. No envía tickets y no procesa transacciones. Los botones de consulta, búsqueda y descarga sí funcionan.
+La aplicación se distribuye como archivos estáticos de React. Incluye el cliente de inicio de sesión con Keycloak, presentación según roles y consumo de la API del mensaje. No incluye servidor de Keycloak, API ni base de datos propios. No envía tickets y no procesa transacciones. Los botones de consulta, búsqueda y descarga sí funcionan.
 
-No introduzcas información real de clientes ni documentos confidenciales: ocultar un botón en React no es un control de acceso. La autenticación, la autorización y los servicios de red son otras partes del proyecto final y deben integrarse y comprobarse por separado.
+Los archivos compilados y los documentos de ejemplo siguen siendo descargables de Nginx: ocultar un botón o bloquear la navegación con React no protege esos archivos. La API debe validar firma, emisor, audiencia, caducidad y roles del token en cada operación. Los documentos privados requieren protección adicional del servidor. La demostración utiliza únicamente información ficticia.
 
 ## Llevarlo a Docker
 
@@ -144,7 +156,7 @@ docker compose ps
 Abre **http://127.0.0.1:8095**. El contenedor se llama `banco-reforma-intranet`. El puerto se eligió para no utilizar el 8080 de prácticas anteriores.
 
 - `Dockerfile` construye React con Node.js y publica `dist/` con Nginx.
-- `nginx.conf` permite recargar rutas como `/documentos`, aplica cabeceras básicas y proporciona `/health`.
+- `nginx.conf` es la plantilla: `npm run build` genera `.generated/nginx.conf`, con los orígenes exactos de Keycloak/API permitidos por CSP. Docker utiliza ese archivo. Nginx permite recargar rutas como `/documentos` y proporciona `/health`.
 - `compose.yaml` publica el servicio únicamente en la computadora anfitriona para esta demostración.
 - Para ver registros: `docker compose logs --tail 50`.
 - Para detenerlo sin eliminar la imagen: `docker compose stop`.
@@ -162,7 +174,7 @@ Este contenedor usa HTTP local. Para la entrega final, configura HTTPS en el pro
 
 En Ayuda aparecerá un botón hacia la mesa externa. Solo se aceptan URL `http` o `https`. Si está vacío, se mantiene la guía de soporte. Las variables `VITE_` son públicas y se incorporan a la compilación; **nunca pongas contraseñas, tokens ni secretos en ellas**.
 
-La integración de Keycloak no está implementada. Consulta **`docs/INTEGRACIONES.md`** para coordinar los datos necesarios y **`docs/EXPOSICION.md`** para presentar esta entrega con claridad.
+Consulta **`docs/INTEGRACIONES.md`** para activar Keycloak y acordar el contrato de la API, y **`docs/EXPOSICION.md`** para presentar esta entrega con claridad. Cambiar `.env` requiere reconstruir el contenedor: las variables `VITE_` se incorporan durante la compilación, no al arrancar Nginx.
 
 ## Archivos principales
 

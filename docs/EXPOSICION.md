@@ -1,41 +1,37 @@
 # Cómo explicar tu parte del proyecto
 
-## Presentación breve
+“Mi parte es el portal del Banco La Reforma, desarrollado con React. Incluye información institucional y un mensaje del día. Preparé la integración con Keycloak para iniciar sesión y mostrar opciones según el rol: ADMIN puede editar el mensaje y EMPLEADO puede leerlo.
 
-“Mi parte del proyecto es la intranet informativa de Banco La Reforma. La desarrollé con React y Vite en Visual Studio Code, en mi computadora física. Centraliza información institucional, comunicados, guías y el directorio de las cinco áreas del banco. El diseño se adapta al tamaño de la pantalla y permite localizar información con un buscador.
+React envía a la API el texto y el token. La API de mi compañero comprueba los permisos, guarda el mensaje y registra quién lo cambió y cuándo. El navegador nunca se conecta directamente a la base de datos. Docker y Nginx permiten ejecutar el portal en Ubuntu o Windows.”
 
-En esta etapa, el contenido es estático y está organizado en un archivo de datos. No usamos información de clientes ni realizamos transacciones. La aplicación está preparada para publicarse con Docker y Nginx. El equipo integrará después la autenticación con Keycloak y los demás servicios.”
+## Estado de la integración
 
-## Recorrido de demostración (5 minutos)
+El código está preparado y tiene pruebas automatizadas. Faltan las URL, realm y contrato definitivo del equipo. Hasta configurarlos y probarlos juntos, explica que **el inicio de sesión y la persistencia real están pendientes de verificación**, no que la demostración ya está conectada.
 
-1. **Inicio:** muestra el menú, la información central y los accesos rápidos.
-2. **Nuestro banco:** explica la organización ficticia, la sede y la necesidad de centralizar información.
-3. **Comunicados:** filtra por Tecnología y abre un comunicado.
-4. **Documentos:** busca “seguridad”, previsualiza la guía, descarga el TXT y guárdalo en favoritos. Explica que los favoritos están en este navegador.
-5. **Directorio:** filtra Tecnología y muestra los perfiles. Aclara que los contactos son de ejemplo.
-6. **Búsqueda global:** escribe “bienvenida” y abre un resultado.
-7. **Ayuda:** muestra las preguntas frecuentes y explica que el envío real de tickets pertenece a otra aplicación.
-8. **Código:** abre `src/data/content.js`, modifica un título y guarda para mostrar la actualización automática.
-9. **Docker:** muestra `docker compose ps` y la dirección local `http://127.0.0.1:8095`, si ejecutaste el contenedor.
+## Recorrido cuando estén conectados los servicios
+
+1. Abrir la URL y mostrar la redirección a Keycloak.
+2. Entrar como EMPLEADO y mostrar el mensaje sin botón de edición.
+3. Cerrar sesión, entrar como ADMIN y actualizar el mensaje.
+4. Consultar desde otra máquina para comprobar que se guardó en el servidor.
+5. Mostrar que una actualización directa con token EMPLEADO es rechazada por la API.
+6. Abrir la mesa de servicios para demostrar SSO entre aplicaciones del mismo realm.
+7. Mostrar el contenedor. El servidor debe estar encendido para atender a las otras máquinas.
 
 ## Respuestas cortas
 
-**¿Qué es React?** Es la biblioteca que usamos para construir la interfaz mediante componentes reutilizables.
+**¿Necesitas una BD en React?** No. Consume una API, que puede utilizar la tabla daily_message del compañero.
 
-**¿Qué es Vite?** Es la herramienta que inicia el servidor de desarrollo y construye los archivos para publicarlos.
+**¿Qué envías al guardar?** Un objeto con content y el token en Authorization. El servidor obtiene el autor de la identidad autenticada.
 
-**¿Dónde están los datos?** En `src/data/content.js`. No hay una base de datos ni una API en esta etapa.
+**¿Ocultar el botón protege los datos?** Es una indicación visual. La protección de la operación está en la validación del token y del rol por la API.
 
-**¿Para qué sirve Docker?** Para empaquetar el portal y su servidor Nginx en una imagen que podamos ejecutar de forma consistente en el laboratorio.
+**¿Dónde está el resto de la información?** En src/data/content.js, compilado con React. Los favoritos son locales del navegador; el mensaje institucional es compartido a través de la API.
 
-**¿Nginx ejecuta React?** Nginx entrega los archivos HTML, CSS y JavaScript ya construidos. React se ejecuta en el navegador del usuario.
+**¿Qué hace Keycloak?** Centraliza el inicio de sesión y proporciona la identidad y roles. No almacena el mensaje institucional de esta aplicación.
 
-**¿Ya tiene SSO?** No. Keycloak se integrará después con un cliente OpenID Connect y un flujo apropiado para una aplicación web. No mostramos un inicio de sesión simulado.
+**¿Qué hace Nginx?** Entrega los archivos construidos. React se ejecuta en el navegador. Nginx no ejecuta la BD ni valida por sí solo permisos de la API.
 
-**¿Cómo se protegerán los datos?** Con autenticación y autorización en los servicios del servidor, además de HTTPS y controles de red. El portal estático no proporciona por sí solo esa protección.
+**¿Funciona en Windows?** Sí: con Node.js para desarrollar o Docker Desktop con contenedores Linux. Ubuntu puede alojar el mismo contenedor.
 
-**¿Por qué los documentos son TXT?** Para que la demostración tenga descargas reales de contenido propio sin presentar archivos inexistentes. Después pueden reemplazarse por documentos institucionales aprobados.
-
-**¿Dónde están los permisos de Gerencia o Recursos Humanos?** Se describen las áreas en el portal, pero los permisos reales están pendientes de la integración del directorio, Keycloak y el backend.
-
-**¿Necesita Internet para navegar?** Una vez instaladas las dependencias y levantado el servidor, el portal no requiere servicios externos para mostrar el contenido. La instalación inicial y la construcción de imágenes sí requieren descargas.
+**¿Requiere Internet?** La construcción inicial descarga dependencias. En uso, el navegador necesita alcanzar intranet, Keycloak y API. Si todos están en la red del laboratorio, no tienen que ser servicios públicos de Internet.

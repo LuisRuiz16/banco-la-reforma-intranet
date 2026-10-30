@@ -4,6 +4,15 @@ services:
       context: .
       args:
         VITE_HELPDESK_URL: ${VITE_HELPDESK_URL:-}
+        VITE_AUTH_ENABLED: ${VITE_AUTH_ENABLED:-false}
+        VITE_KEYCLOAK_URL: ${VITE_KEYCLOAK_URL:-}
+        VITE_KEYCLOAK_REALM: ${VITE_KEYCLOAK_REALM:-}
+        VITE_KEYCLOAK_CLIENT_ID: ${VITE_KEYCLOAK_CLIENT_ID:-intranet}
+        VITE_KEYCLOAK_ROLE_SOURCE: ${VITE_KEYCLOAK_ROLE_SOURCE:-client}
+        VITE_KEYCLOAK_ROLE_CLIENT_ID: ${VITE_KEYCLOAK_ROLE_CLIENT_ID:-intranet}
+        VITE_MESSAGE_READ_URL: ${VITE_MESSAGE_READ_URL:-}
+        VITE_MESSAGE_WRITE_URL: ${VITE_MESSAGE_WRITE_URL:-}
+        VITE_MESSAGE_WRITE_METHOD: ${VITE_MESSAGE_WRITE_METHOD:-PUT}
     image: banco-reforma-intranet:local
     container_name: banco-reforma-intranet
     ports:

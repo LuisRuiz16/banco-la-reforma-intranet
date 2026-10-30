@@ -30,7 +30,7 @@ En el navegador escribe `http://IP_DE_UBUNTU:8095/`, reemplazando `IP_DE_UBUNTU`
 
 El servidor y los clientes deben compartir una red accesible. Si usas VirtualBox, conecta las máquinas a la red del proyecto y evita IP duplicadas. El firewall debe permitir TCP 8095 desde los clientes autorizados. `localhost` en una VM cliente apunta a esa VM, no al servidor.
 
-Usa HTTP: este contenedor no incluye HTTPS. Si escribes HTTPS en ese puerto, aparecerá un error de protocolo. HTTPS y Keycloak requieren una integración posterior.
+Para la vista informativa usa HTTP: el puerto 8095 no incluye TLS. Para habilitar Keycloak desde otras VMs, publica el portal detrás de un proxy HTTPS con certificado confiable y abre esa URL HTTPS. Escribir HTTPS directamente en 8095 producirá un error de protocolo. Configura las variables y servicios siguiendo [INTEGRACIONES.md](INTEGRACIONES.md).
 
 ## 4. Administrar el contenedor
 
@@ -59,4 +59,4 @@ sudo docker compose -f compose.ubuntu.yaml up -d --build
 - **Container name already in use:** las variantes `compose.yaml` y `compose.ubuntu.yaml` usan el mismo contenedor. No ejecutes ambas simultáneamente; detén la variante anterior antes de cambiar.
 - **Los cambios no aparecen:** reconstruye con `up -d --build` y recarga el navegador.
 
-Esta es una intranet informativa estática. No requiere una base de datos y aún no implementa autenticación ni permisos por rol.
+La vista informativa funciona sin servicios externos. El login configurable y los roles están implementados en el frontend; necesitan Keycloak y la API del equipo para operar. La BD pertenece al backend del compañero, no al contenedor de React. Toda modificación de variables VITE_ requiere reconstruir la imagen.

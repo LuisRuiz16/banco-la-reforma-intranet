@@ -1,4 +1,6 @@
 node_modules
+.generated
+coverage
 dist
 .git
 .vscode

@@ -1,6 +1,21 @@
 # Comprobación de la entrega
 
-Fecha de verificación: **25 de octubre de 2026**.
+## Keycloak configurable y mensaje del día — 30 de octubre de 2026
+
+- `npm test`: **32 pruebas correctas** de configuración, sesión, permisos, API e interfaz. Se usan adaptadores y respuestas de prueba; no son accesos a los servicios reales del equipo.
+- Se comprobó que EMPLEADO puede leer sin editor y ADMIN puede editar, cancelar y guardar el contenido confirmado por la API.
+- Las pruebas verifican PKCE/login obligatorio, una única inicialización de Keycloak, actualización del token, retiro de roles, sesión vencida, 401/403/5xx, formato inválido, validación de texto y cancelación de peticiones.
+- La escritura envía únicamente `content` y bearer; nunca envía el autor o la fecha como datos editables. El token no se guarda en almacenamiento del navegador.
+- `npm run build`: compilación de producción correcta y generación de CSP con orígenes configurables.
+- Las dos variantes Compose pasan `config --quiet`.
+- Se validó la sintaxis de la configuración Nginx generada con orígenes HTTPS de ejemplo usando el ejecutable Nginx local de Windows, dentro de una configuración de prueba con rutas temporales y puerto local. No sustituye la prueba de la imagen Linux.
+- La vista informativa compilada abre en el navegador y muestra el nuevo bloque “Mensaje del día”, sin errores de consola. Sin conexión real configurada se muestra como pendiente y no permite editar.
+- Docker Desktop está apagado: en esta revisión no se construyó ni se ejecutó la nueva imagen del contenedor.
+- **Pendiente:** probar el login/SSO, CORS, validación de tokens y persistencia compartida con Keycloak y API reales. Faltan URL, realm y contrato definitivo del compañero. Ver [INTEGRACIONES.md](INTEGRACIONES.md).
+
+Las comprobaciones históricas de la primera versión se conservan abajo con sus fechas.
+
+## Verificación inicial — 25 de octubre de 2026
 
 ## Preparación para compartir en GitHub — 29 de octubre de 2026
 
@@ -37,7 +52,7 @@ Fecha de verificación: **25 de octubre de 2026**.
 | Cabeceras | Se verificaron `X-Frame-Options: DENY` y Content Security Policy |
 | Navegador en producción | Sin errores ni advertencias en la consola durante el recorrido comprobado |
 
-No se evaluaron SSO, APIs, bases de datos ni permisos de servidor: no forman parte de esta implementación estática. Las comprobaciones anteriores no constituyen una auditoría de seguridad.
+En la verificación inicial del 25 de octubre no se evaluaron SSO, APIs, bases de datos ni permisos de servidor. El avance posterior y sus límites se describen al inicio de este documento. Las comprobaciones no constituyen una auditoría de seguridad.
 
 ## Capturas de la aplicación real
 
